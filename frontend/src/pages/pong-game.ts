@@ -1,6 +1,7 @@
 // Déclaration pour étendre l'interface Window
 import "../styles/pong-game.css";
 import { AIOpponent, AIDifficulty } from '../game/ai/ai-opponent';
+import { navigate } from "../router";
 
 
 declare global {
@@ -694,6 +695,16 @@ export default function initializePongGame(): (() => void) | null {
 				console.log("Debug mode:", state.debugMode);
 			}
 		});
+
+		document.getElementById("switch-checkbox")!.addEventListener("change", function () {
+			const checkbox = document.getElementById("switch-checkbox") as HTMLInputElement;
+		
+			if (checkbox.checked) {
+				history.pushState({}, "", "pong-game-3D");
+				navigate();
+			}
+		});
+		
 	}
 
 	init();

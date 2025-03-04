@@ -8,6 +8,7 @@ const routes: { [key: string]: string } = {
   "/profile-page": "profile-page",
   "/test": "test",
   "/login": "login",
+  "/pong-game-3D" : "pong-game-3D",
   "404": "404",
 };
 
@@ -53,6 +54,10 @@ const loadPageScript = async (path: string): Promise<void> => {
       currentCleanup = module.default() || null;
     } else if (path === "/pong-game") {
       const module = await import("./pages/pong-game");
+      currentCleanup = module.default() || null;
+    }
+    else if (path === "/pong-game-3D") {
+      const module = await import("./pages/pong-game-3D");
       currentCleanup = module.default() || null;
     } else if (path === "/profile-page") {
       const module = await import("./pages/profile-page");
