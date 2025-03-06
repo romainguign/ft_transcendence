@@ -2,6 +2,7 @@ import "./styles/globals.css";
 import "./styles/404.css";
 import { navigate, isAuthenticated } from "./router";
 import initializeHomeAnimations from "./pages/home";
+import { initChat, cleanupChat } from "./modules/chat";
 
 const profileButton = document.querySelector(".profile-label");
 
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   checkAuthStatus();
   initializeNavbarAnimation();
   await navigate();
+
+  initChat();
 
   if (window.location.pathname === "/" || window.location.pathname === "/home") {
     initializeHomeAnimations();

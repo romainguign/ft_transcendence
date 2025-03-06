@@ -1,5 +1,6 @@
 import initializeHomeAnimations from "./pages/home";
 import { changeProfileLabel } from "./app";
+import { initChat } from "./modules/chat";
 
 const routes: { [key: string]: string } = {
   "/": "home",
@@ -32,6 +33,7 @@ export const navigate = async (): Promise<void> => {
 
   await loadPageScript(path);
 
+  initChat();
 
   if (page === "home") {
     initializeHomeAnimations();
@@ -56,11 +58,11 @@ const loadPageScript = async (path: string): Promise<void> => {
       currentCleanup = module.default() || null;
     } else if (path === "/profile-page") {
       const module = await import("./pages/profile-page");
-      currentCleanup = module.default() || null;
+      currentCleanup;
     }
       else if (path === "/test") {
-      // const module = await import("./pages/test");
-      // module.default();
+      const module = await import("./pages/test");
+      module.default();
     }
      else if (path === "/login") {
       const module = await import("./pages/login");

@@ -21,7 +21,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
         return reply.status(401).send({ error: "Mot de passe incorrect" });
       }
 
-      const token = fastify.jwt.sign({ userId: user.id });
+      const token = fastify.jwt.sign({ id: user.id });
       reply
         .setCookie("sessionid", token, {
           httpOnly: true,

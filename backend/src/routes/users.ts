@@ -59,4 +59,36 @@ export default async function userRoutes(fastify: FastifyInstance) {
 //     }
 //   });
 
+	fastify.get('/user/me', {
+		onRequest: [fastify.authenticate]
+	}, async (request, reply) => {
+		// Le middleware authenticate vérifie déjà le JWT
+		const userId = request.user.id;
+		
+		try {
+		// Récupérer les informations de l'utilisateur depuis la base de données
+		const user = await new Promise<{ id: number; username: string; email: string; password: string }>((resolve, reject) => {
+			userQueries.getUserById(userId, (err, user) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(user);
+				}
+			});
+		});
+		
+		if (!user) {
+			return reply.status(404).send({ error: "Utilisateur non trouvé" });
+		}
+		
+		// Renvoyer les informations de l'utilisateur sans le mot de passe
+		const { password, ...userInfo } = user;
+		console.log('userInfo:', userInfo);
+		return reply.send(userInfo);
+		} catch (err) {
+		fastify.log.error(err);
+		return reply.status(500).send({ error: "Erreur serveur" });
+		}
+	});
+
 }

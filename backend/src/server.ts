@@ -5,6 +5,7 @@ import path from "path";
 import fastifyFormbody from "@fastify/formbody";
 import jwt from '@fastify/jwt';
 import fastifyCookie from '@fastify/cookie';
+import websocket from '@fastify/websocket';
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 import config from './config/fastifyconfig';
@@ -12,6 +13,7 @@ import migrateRoutes from './routes/migrate';
 import createUsersTable from '../database/migrations/001_create_users_table'
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
+import chatRoutes from "./routes/chat";
 
 const fastify = Fastify({ logger: true });
 
@@ -31,6 +33,9 @@ fastify.setNotFoundHandler((request, reply) => {
 
 fastify.register(fastifyFormbody);
 fastify.register(fastifyCookie);
+fastify.register(websocket, {
+  options: { maxPayload: 1048576 },
+});
 
 fastify.register(jwt, {
   secret: config.jwtSecret,
@@ -50,7 +55,7 @@ fastify.decorate("authenticate", async (request: any, reply: any) => {
   }
 });
 
-fastify.register(migrateRoutes);
+const connections = new Map();
 
 //test
 fastify.get("/hello", async (request, reply) => {
@@ -63,8 +68,10 @@ fastify.get("/", async (request, reply) => {
 });
 
 //vos routes
+fastify.register(migrateRoutes);
 fastify.register(userRoutes);
 fastify.register(authRoutes);
+fastify.register(chatRoutes);
 
 
 const start = async () => {

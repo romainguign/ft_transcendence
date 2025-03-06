@@ -10,3 +10,12 @@ declare module 'fastify' {
     ) => Promise<void>;
   }
 }
+
+declare module '@fastify/jwt' {
+  interface FastifyJWT {
+    payload: { id: number }
+    user: {
+      id: number
+    }
+  }
+}
