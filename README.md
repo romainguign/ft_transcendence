@@ -25,7 +25,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/yvann-ba/ft_transcendence.git
+git clone https://github.com/romainguign/ft_transcendence.git
 cd ft_transcendence
 
 # Create your .env file from example
